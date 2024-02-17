@@ -1,0 +1,10 @@
+GNN_PersLay/
+dataset/
+datasets_for_geo/
+human_protein_data_files/
+human_protein_pdbs/
+human_protein_ph_files/
+knotted_protein_data_files/
+knotted_protein_pdbs/
+PaddleHelix/
+ph_files_latest/
