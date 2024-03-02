@@ -456,7 +456,7 @@ def run_hyperparameter_tuning(X, Y, tag=''):
 
     print("Completed hyperparameter tuning")
 
-def run_ablation_evaluation(X, Y, tag=''):
+def run_ablation_evaluation(X, Y, X_k_wo_dom, Y_k_wo_dom, tag=''):
     """
     Train all ablations and evaluate them based on the best hyperparameters (saved as json in the folder `training/best_hyperparmameters_{tag}.json`).
     """
@@ -466,7 +466,7 @@ def run_ablation_evaluation(X, Y, tag=''):
         best_hyperparameters = json.load(f)
 
     # Ablation w/o Dominant Label
-    X_wo_dom, Y_wo_dom = remove_dominant_label(X, Y)
+    X_wo_dom, Y_wo_dom = X_k_wo_dom, Y_k_wo_dom
     X_train_wo_dom, X_test_wo_dom, Y_train_wo_dom, Y_test_wo_dom = train_test_split(X_wo_dom, Y_wo_dom, test_size=0.2, random_state=42)
     model_wo_dom, _ = train(get_model(X.shape[1], Y.shape[1], best_hyperparameters["hidden_size"], best_hyperparameters["hidden_layers"]),
                             X_train_wo_dom,
@@ -547,6 +547,7 @@ if __name__ == "__main__":
     
     X, Y = create_dataset_from_scratch(labels_path, x_ph_path)
     X_k, Y_k = reduce_dataset_k_labels(X, Y, 5)
+    X_k_wo_dom, Y_k_wo_dom = reduce_dataset_k_labels(*remove_dominant_label(X, Y), 5)
 
     run_hyperparameter_tuning(X_k, Y_k, tag='5_labels')
-    run_ablation_evaluation(X_k, Y_k, tag='5_labels')
+    run_ablation_evaluation(X_k, Y_k, X_k_wo_dom, Y_k_wo_dom, tag='5_labels')
