@@ -112,3 +112,8 @@ if __name__ == '__main__':
 # diagrams = get_persistence_diagrams(input_file)
 # vectors = get_perslayer(diagrams)
 # print(vectors)
+
+'''
+Example command line usage
+'''
+# python calculate_ph/ph_functions.py 'dataset/human_proteins/human_protein_data_files/5BK8/5BK8_rec_bb.txt' ${output_file} --diagrams_png ${diagrams_png} --landscape_png ${landscape_png}
