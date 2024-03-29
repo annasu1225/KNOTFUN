@@ -1,24 +1,27 @@
-# #!/bin/bash
-# #SBATCH --job-name=ph_job
-# #SBATCH --output=ph_job_%j.out
-# #SBATCH --error=ph_job_%j.err
-# #SBATCH --time=2-00:00:00
-# #SBATCH --mem-per-cpu 10G 
-# #SBATCH -p gpu
-# #SBATCH --gpus=1
-# #SBATCH --mail-type=ALL
-# #SBATCH -c 2
+##!/bin/bash
+##SBATCH --job-name=h2_job
+##SBATCH --output=h2_job_%j.out
+##SBATCH --error=h2_job_%j.err
+##SBATCH --time=2-00:00:00
+##SBATCH --mem-per-cpu 10G 
+##SBATCH -p gpu
+##SBATCH --gpus=1
+##SBATCH --mail-type=ALL
+##SBATCH -c 2
+##SBATCH -C "a100|rtx5000|rtx3090"
 
-# # Activate the conda environment
-# module purge
-# module load miniconda
+# Activate the conda environment
+# module --force purge
+# module restore cuda11
 # conda activate ph
 
+nvidia-smi
+
 # Directory containing the input files
-input_dir="dataset/human_proteins/human_protein_data_files_intersection"
+input_dir="/gpfs/gibbs/pi/gerstein/as4272/KnotFun/dataset/human_proteins/human_protein_data_files_intersection"
 
 # Directory to save the output files
-output_dir="dataset/human_proteins/human_protein_ph_h2_files"
+output_dir="/gpfs/gibbs/pi/gerstein/as4272/KnotFun/dataset/human_proteins/human_protein_ph_h2_files"
 
 counter=0
 
@@ -46,7 +49,7 @@ do
     fi
 
     # Call the Python script with the constructed file paths
-    python calculate_ph/ph_functions_h2.py ${input_file} ${threshold} ${intermediate_file} ${output_file} --diagrams_png ${diagrams_png} --landscape_png ${landscape_png}
+    python /gpfs/gibbs/pi/gerstein/as4272/KnotFun/calculate_ph/ph_functions_h2.py ${input_file} ${threshold} ${intermediate_file} ${output_file} --diagrams_png ${diagrams_png} --landscape_png ${landscape_png}
     
     ((counter++))
     echo "${id} ph vector generated, counter: $counter"

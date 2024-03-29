@@ -154,4 +154,4 @@ if __name__ == '__main__':
 '''
 Example command line usage
 '''
-# python calculate_ph/ph_functions_h2.py 'dataset/human_proteins/human_protein_data_files/5BK8/5BK8_rec_bb.txt' 30 'dataset/human_proteins/human_protein_ph_h2_files/5BK8/5BK8_result_dict.json' 'dataset/human_proteins/human_protein_ph_h2_files/5BK8/5BK8_ph_vec.npy' --diagrams_png 'dataset/human_proteins/human_protein_ph_h2_files/5BK8/5BK8_pd.png' --landscape_png 'dataset/human_proteins/human_protein_ph_h2_files/5BK8/5BK8_pl.png'
+# python calculate_ph/ph_functions_h2.py 'dataset/human_proteins/human_protein_data_files/6AKR/6AKR_rec_bb.txt' 30 'dataset/human_proteins/human_protein_ph_h2_files/6AKR/6AKR_result_dict.json' 'dataset/human_proteins/human_protein_ph_h2_files/6AKR/6AKR_ph_vec.npy' --diagrams_png 'dataset/human_proteins/human_protein_ph_h2_files/6AKR/6AKR_pd.png' --landscape_png 'dataset/human_proteins/human_protein_ph_h2_files/6AKR/6AKR_pl.png'

@@ -119,16 +119,32 @@ def create_dataset_from_scratch(label_path, ph_folder):
     X, Y = [], []
     all_functions = set()
 
+    # # Load PH vectors and associate them with molecular functions
+    # for pdb_id, functions in functions_dict.items():
+    #     ph_vec_path = os.path.join(ph_folder, pdb_id, pdb_id + "_ph_vec.npy")
+    #     if os.path.exists(ph_vec_path):
+    #         ph_vec = np.load(ph_vec_path).flatten()
+    #         X.append(ph_vec)
+    #         Y.append(functions)  # Temporarily store the list of functions
+    #         all_functions.update(functions)
+    #     else:
+    #         print("Missing path for", pdb_id)
+
     # Load PH vectors and associate them with molecular functions
     for pdb_id, functions in functions_dict.items():
         ph_vec_path = os.path.join(ph_folder, pdb_id, pdb_id + "_ph_vec.npy")
         if os.path.exists(ph_vec_path):
-            ph_vec = np.load(ph_vec_path).flatten()
-            X.append(ph_vec)
-            Y.append(functions)  # Temporarily store the list of functions
-            all_functions.update(functions)
+            ph_vec = np.load(ph_vec_path)
+            if ph_vec.size > 0:  # Check if the array is non-empty
+                ph_vec = ph_vec.flatten()
+                X.append(ph_vec)
+                Y.append(functions)  # Temporarily store the list of functions
+                all_functions.update(functions)
+            else:
+                print(f"{pdb_id} vector is empty")  # Indicate that the array is empty
         else:
-            print("Missing path for", pdb_id)
+            print(f"Missing path for {pdb_id}")
+
 
     # Convert all_functions to a list and map each function to an index
     all_functions = list(all_functions)
@@ -266,59 +282,61 @@ def reduce_dataset_k_labels(X, Y, k):
 
 def remove_ph_group(X, Y, group_index):
     """
-    Removes group_index (either 0 or 1) PH group from the dataset
+    Removes group_index (0, 1, 2) PH group from the dataset
 
     Returns the modified X and the original Y
     """
 
-    # Original vector for each example is x_i \in 2x9000. So the flattened is 1x18000
+    # Original vector for each example is x_i \in 3x9000. So the flattened is 1x27000
     if group_index == 0:
         return X[:, 9000:], Y # Ablate the first group
     elif group_index == 1:
         return X[:, :9000], Y # Ablate the second group
+    elif group_index == 2:
+        return X[:, 18000:], Y # Ablate the third group
     else:
-        raise ValueError("Invalid group index provided for removing PH group. Must be 0 or 1.")
+        raise ValueError("Invalid group index provided for removing PH group. Must be 0, 1, 2.")
 
 
-def run():
-    # Path to CSV file containing PDB ids used for GeoGNN Training. Was used to ensure that we only ran PH on PDB ids we had GeoGNN embeddings for.
-    ids_path = "/gpfs/gibbs/pi/gerstein/as4272/KnotFun/PaddleHelix/apps/pretrained_compound/ChemRL/GEM/finetune_models/knot/ids_in_order.csv"
-    # Path to the labels file for the dataset (Y)
-    labels_path = "/gpfs/gibbs/pi/gerstein/as4272/KnotFun/PaddleHelix/apps/pretrained_compound/ChemRL/GEM/finetune_models/knot/labels.npy"
-    # Path to the PH embeddings for the dataset (X_ph)
-    x_ph_path = "/gpfs/gibbs/pi/gerstein/as4272/KnotFun/human_protein_ph_files"
-    # Path to the GeoGNN embeddings for the dataset (X_geo)
-    x_geo_path = "/gpfs/gibbs/pi/gerstein/as4272/KnotFun/PaddleHelix/apps/pretrained_compound/ChemRL/GEM/finetune_models/knot/graph_encodings.npy"
-    # Path to the new labels file
-    labels_path = "/gpfs/gibbs/pi/gerstein/as4272/KnotFun/catalogs/human_protein_mf_processed.txt"
+# def run():
+#     # Path to CSV file containing PDB ids used for GeoGNN Training. Was used to ensure that we only ran PH on PDB ids we had GeoGNN embeddings for.
+#     ids_path = "/gpfs/gibbs/pi/gerstein/as4272/KnotFun/PaddleHelix/apps/pretrained_compound/ChemRL/GEM/finetune_models/knot/ids_in_order.csv"
+#     # Path to the labels file for the dataset (Y)
+#     labels_path = "/gpfs/gibbs/pi/gerstein/as4272/KnotFun/PaddleHelix/apps/pretrained_compound/ChemRL/GEM/finetune_models/knot/labels.npy"
+#     # Path to the PH embeddings for the dataset (X_ph)
+#     x_ph_path = "/gpfs/gibbs/pi/gerstein/as4272/KnotFun/human_protein_ph_h2_files"
+#     # Path to the GeoGNN embeddings for the dataset (X_geo)
+#     x_geo_path = "/gpfs/gibbs/pi/gerstein/as4272/KnotFun/PaddleHelix/apps/pretrained_compound/ChemRL/GEM/finetune_models/knot/graph_encodings.npy"
+#     # Path to the new labels file
+#     labels_path = "/gpfs/gibbs/pi/gerstein/as4272/KnotFun/catalogs/human_protein_mf_processed.txt"
     
-    X, Y = create_dataset_from_scratch(labels_path, x_ph_path)
+#     X, Y = create_dataset_from_scratch(labels_path, x_ph_path)
 
-    # Training w/ all data
-    X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
-    model, _ = train(get_model(X.shape[1], Y.shape[1]), X_train, Y_train)
-    full_loss, full_auc, full_accuracy, full_binary_accuracy, full_exact_accuracy = evaluate(model, X_test, Y_test)
+#     # Training w/ all data
+#     X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+#     model, _ = train(get_model(X.shape[1], Y.shape[1]), X_train, Y_train)
+#     full_loss, full_auc, full_accuracy, full_binary_accuracy, full_exact_accuracy = evaluate(model, X_test, Y_test)
 
-    label_counts = [20, 15, 10, 5]
+#     label_counts = [20, 15, 10, 5]
 
-    # Loop through each label count, train, and evaluate models
-    for k in label_counts:
-        # Reduce dataset to top k labels
-        X, Y = reduce_dataset_k_labels(X, Y, k)
-        # Split the dataset
-        X_train_k, X_test_k, Y_train_k, Y_test_k = train_test_split(X, Y, test_size=0.2, random_state=42)
-        # Train the model
-        model_k, _ = train(get_model(X.shape[1], Y.shape[1]), X_train_k, Y_train_k)
-        # Evaluate the model
-        loss_k, auc_k, accuracY, binary_accuracY, exact_accuracY = evaluate(model_k, X_test_k, Y_test_k)
+#     # Loop through each label count, train, and evaluate models
+#     for k in label_counts:
+#         # Reduce dataset to top k labels
+#         X, Y = reduce_dataset_k_labels(X, Y, k)
+#         # Split the dataset
+#         X_train_k, X_test_k, Y_train_k, Y_test_k = train_test_split(X, Y, test_size=0.2, random_state=42)
+#         # Train the model
+#         model_k, _ = train(get_model(X.shape[1], Y.shape[1]), X_train_k, Y_train_k)
+#         # Evaluate the model
+#         loss_k, auc_k, accuracY, binary_accuracY, exact_accuracY = evaluate(model_k, X_test_k, Y_test_k)
         
-        # Print the results
-        print(f"Results for Top {k} Labels Model:")
-        print(f"Loss: {loss_k}")
-        print(f"AUC: {auc_k}")
-        print(f"Accuracy: {accuracY}")
-        print(f"Binary Accuracy: {binary_accuracY}")
-        print(f"Exact Accuracy: {exact_accuracY}\n")
+#         # Print the results
+#         print(f"Results for Top {k} Labels Model:")
+#         print(f"Loss: {loss_k}")
+#         print(f"AUC: {auc_k}")
+#         print(f"Accuracy: {accuracY}")
+#         print(f"Binary Accuracy: {binary_accuracY}")
+#         print(f"Exact Accuracy: {exact_accuracY}\n")
 
     # # Ablation w/o Dominant Label
     # X_wo_dom, Y_wo_dom = remove_dominant_label(X, Y)
@@ -493,6 +511,16 @@ def run_ablation_evaluation(X, Y, X_k_wo_dom, Y_k_wo_dom, tag=''):
                             best_hyperparameters["learning_rate"])
     loss_wo_ph1, auc_wo_ph1, accuracy_wo_ph1, binary_accuracy_wo_ph1, exact_accuracy_wo_ph1 = evaluate(model_wo_ph1, X_test_wo_ph1, Y_test_wo_ph1)
 
+    # Ablation w/o PH Group 2
+    X_wo_ph2, Y_wo_ph2 = remove_ph_group(X, Y, 2)
+    X_train_wo_ph2, X_test_wo_ph2, Y_train_wo_ph2, Y_test_wo_ph2 = train_test_split(X_wo_ph2, Y_wo_ph2, test_size=0.2, random_state=42)
+    model_wo_ph2, _ = train(get_model(X_wo_ph2.shape[1], Y_wo_ph2.shape[1], best_hyperparameters["hidden_size"], best_hyperparameters["hidden_layers"]),
+                            X_train_wo_ph2, 
+                            Y_train_wo_ph2,
+                            best_hyperparameters["learning_rate"])
+    loss_wo_ph2, auc_wo_ph2, accuracy_wo_ph2, binary_accuracy_wo_ph2, exact_accuracy_wo_ph2 = evaluate(model_wo_ph2, X_test_wo_ph2, Y_test_wo_ph2)
+
+
     # Now print out all results including exact_accuracy for each scenario
     print("Results for w/o Dominant Label")
     print(f"Loss: {loss_wo_dom}, AUC: {auc_wo_dom}, Accuracy: {accuracy_wo_dom}, Binary Accuracy: {binary_accuracy_wo_dom}, Exact Accuracy: {exact_accuracy_wo_dom}\n")
@@ -502,6 +530,9 @@ def run_ablation_evaluation(X, Y, X_k_wo_dom, Y_k_wo_dom, tag=''):
 
     print("Results for w/o PH Group 1")
     print(f"Loss: {loss_wo_ph1}, AUC: {auc_wo_ph1}, Accuracy: {accuracy_wo_ph1}, Binary Accuracy: {binary_accuracy_wo_ph1}, Exact Accuracy: {exact_accuracy_wo_ph1}\n")
+
+    print("Results for w/o PH Group 2")
+    print(f"Loss: {loss_wo_ph2}, AUC: {auc_wo_ph2}, Accuracy: {accuracy_wo_ph2}, Binary Accuracy: {binary_accuracy_wo_ph2}, Exact Accuracy: {exact_accuracy_wo_ph2}\n")
 
     # Save ablation results to json
     out_dict = {
@@ -525,6 +556,13 @@ def run_ablation_evaluation(X, Y, X_k_wo_dom, Y_k_wo_dom, tag=''):
             "accuracy": float(accuracy_wo_ph1),
             "binary_accuracy": float(binary_accuracy_wo_ph1),
             "exact_accuracy": float(exact_accuracy_wo_ph1)
+        },
+        "w/o PH Group 2": {
+            "loss": float(loss_wo_ph2),
+            "auc": float(auc_wo_ph2),
+            "accuracy": float(accuracy_wo_ph2),
+            "binary_accuracy": float(binary_accuracy_wo_ph2),
+            "exact_accuracy": float(exact_accuracy_wo_ph2)
         }
     }
 
@@ -535,15 +573,15 @@ def run_ablation_evaluation(X, Y, X_k_wo_dom, Y_k_wo_dom, tag=''):
 
 if __name__ == "__main__":
     # Path to CSV file containing PDB ids used for GeoGNN Training. Was used to ensure that we only ran PH on PDB ids we had GeoGNN embeddings for.
-    ids_path = "/gpfs/gibbs/pi/gerstein/as4272/KnotFun/PaddleHelix/apps/pretrained_compound/ChemRL/GEM/finetune_models/knot/ids_in_order.csv"
+    # ids_path = "/gpfs/gibbs/pi/gerstein/as4272/KnotFun/PaddleHelix/apps/pretrained_compound/ChemRL/GEM/finetune_models/knot/ids_in_order.csv"
     # Path to the labels file for the dataset (Y)
-    labels_path = "/gpfs/gibbs/pi/gerstein/as4272/KnotFun/PaddleHelix/apps/pretrained_compound/ChemRL/GEM/finetune_models/knot/labels.npy"
+    # labels_path = "/gpfs/gibbs/pi/gerstein/as4272/KnotFun/PaddleHelix/apps/pretrained_compound/ChemRL/GEM/finetune_models/knot/labels.npy"
     # Path to the PH embeddings for the dataset (X_ph)
-    x_ph_path = "/gpfs/gibbs/pi/gerstein/as4272/KnotFun/human_protein_ph_files"
+    x_ph_path = "/gpfs/gibbs/pi/gerstein/as4272/KnotFun/dataset/human_proteins/human_protein_ph_h2_files"
     # Path to the GeoGNN embeddings for the dataset (X_geo)
-    x_geo_path = "/gpfs/gibbs/pi/gerstein/as4272/KnotFun/PaddleHelix/apps/pretrained_compound/ChemRL/GEM/finetune_models/knot/graph_encodings.npy"
+    # x_geo_path = "/gpfs/gibbs/pi/gerstein/as4272/KnotFun/PaddleHelix/apps/pretrained_compound/ChemRL/GEM/finetune_models/knot/graph_encodings.npy"
     # Path to the new labels file
-    labels_path = "/gpfs/gibbs/pi/gerstein/as4272/KnotFun/catalogs/human_protein_mf_processed.txt"
+    labels_path = "/gpfs/gibbs/pi/gerstein/as4272/KnotFun/dataset/human_proteins/human_protein_mf_processed_intersection.txt"
     
     X, Y = create_dataset_from_scratch(labels_path, x_ph_path)
     X_k, Y_k = reduce_dataset_k_labels(X, Y, 5)
