@@ -2,3 +2,7 @@ GNN_PersLay/
 dataset/
 PaddleHelix/
 run_h2_output.txt
+protein_bert/
+plots/
+ripser-plusplus/
+training_02_16
