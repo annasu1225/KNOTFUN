@@ -14,8 +14,8 @@ Below are two options to use our model:
     * y_data.npy
     * labels.csv
     * best_model
-
-2. Use `main.py` to reproduce our results and ablations after installing dependencies listed below under **PersLay+ProteinBERT Training**
+2. Install the dependencies listed below under **PersLay+ProteinBERT Training**
+3. Use `main.py` to reproduce our results and ablations
 
 ```
 main.py --x_file x_data.npy --y_file y_data.npy --labels_file labels.csv --model_path best_model
