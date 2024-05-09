@@ -61,7 +61,7 @@ python main.py --from_scratch --ph_path your_directory --labels_path your_direct
 - h5py (3.10.0)
 - guhdi (3.8.0)
 
-### PersLay+ProteinBERT Training & Inference
+### PersLay+ProteinBERT Training
 - tensorflow (2.4.0)
 - tensorflow_addons (0.12.1)
 - numpy (1.20.1)
