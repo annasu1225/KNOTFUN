@@ -8,7 +8,7 @@ Below are two options to use our model:
 
 ## Option 1 - Start From Our Dataset & Reproduce Results
 
-1. Download our dataset & model weights from (here)[]
+1. Download our dataset & model weights from (here)[https://drive.google.com/drive/folders/1vwBZ9MLocZCF6WLP4ZgvAZ3Fj2Bi117v?usp=drive_link].
 
     * x_data.npy
     * y_data.npy
@@ -26,8 +26,11 @@ main.py --x_file x_data.npy --y_file y_data.npy --labels_file labels.csv --model
 * Use `--ablation` to reproduce our ablation study
 * Exclude `--model_path` to reproduce training \& hyperparameter tuning
 
-## Option 2
-Start from any PH and PB embeddings
+## Option 2 - Bring Your Own Dataset
+
+1. Generate Vietoris–Rips persistence barcodes for your data using `calculate_ph/run_ph.sh`, modifying `input_dir` and `output_dir` to your directories
+2. Train PersLay on your dataset and generate features using `calculate_ph/ph_functions_h2_v2.py`, modifying `input_dir` and `output_dir` to your directories
+3. 
 
 PB CSV Example-> Drive
 PH CSV Example-> Drive
@@ -47,7 +50,6 @@ Note: All training was done on NVIDIA A100 details….
 
 ### For Ripser++
 - ripserplusplus (1.1.3)
-
 
 ### For PersLay
 - numpy (1.24.3)
