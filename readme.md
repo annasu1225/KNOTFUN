@@ -15,7 +15,7 @@ Below are two options to use our model:
     * labels.csv
     * best_model
 
-2. Use `main.py` to reproduce our results and ablations
+2. Use `main.py` to reproduce our results and ablations after installing dependencies listed below under
 
 ```
 main.py --x_file x_data.npy --y_file y_data.npy --labels_file labels.csv --model_path best_model
@@ -28,9 +28,16 @@ main.py --x_file x_data.npy --y_file y_data.npy --labels_file labels.csv --model
 
 ## Option 2 - Bring Your Own Dataset
 
-1. Generate Vietoris–Rips persistence barcodes for your data using `calculate_ph/run_ph.sh`, modifying `input_dir` and `output_dir` to your directories
-2. Train PersLay on your dataset and generate features using `calculate_ph/ph_functions_h2_v2.py`, modifying `input_dir` and `output_dir` to your directories
-3. 
+1. Install dependencies under **PersLay Training**
+2. Generate Vietoris–Rips persistence barcodes for your data using `sh calculate_ph/run_ph.sh`, modifying `input_dir` and `output_dir` to your directories
+3. Train PersLay on your dataset and generate features using
+
+```
+python calculate_ph/ph_functions_h2_v2.py input_dir output_dir
+```
+
+4. Create a new environment and install the dependencies under **PersLay+ProteinBERT Training**
+5. Clone the [ProteinBERT Repo](https://github.com/nadavbra/protein_bert), and add the files in the `protein_bert`  folder in this repository. Generate ProteinBERT embeddings using
 
 PB CSV Example-> Drive
 PH CSV Example-> Drive
@@ -51,7 +58,7 @@ Note: All training was done on NVIDIA A100 details….
 ### For Ripser++
 - ripserplusplus (1.1.3)
 
-### For PersLay
+### PersLay Training
 - numpy (1.24.3)
 - tensorflow (2.13.0)
 - sklearn (1.3.2)
@@ -61,8 +68,7 @@ Note: All training was done on NVIDIA A100 details….
 - h5py (3.10.0)
 - guhdi (3.8.0)
 
-
-### For ProteinBERT
+### PersLay+ProteinBERT Training & Inference
 - tensorflow (2.4.0)
 - tensorflow_addons (0.12.1)
 - numpy (1.20.1)
@@ -70,7 +76,6 @@ Note: All training was done on NVIDIA A100 details….
 - h5py (3.11.0)
 - lxml (5.2.1)
 - pyfaidx (0.8.1.1)
-
 
 ## References
 1. https://github.com/simonzhang00/ripser-plusplus/tree/master
