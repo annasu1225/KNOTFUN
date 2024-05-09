@@ -71,7 +71,7 @@ python main.py --from_scratch --ph_path your_directory --labels_path your_direct
 - pyfaidx (0.8.1.1)
 
 ## References
-1. https://github.com/simonzhang00/ripser-plusplus/tree/master
-2. https://github.com/MathieuCarriere/perslay
-3. https://github.com/nadavbra/protein_bert
+1. Zhang S, Xiao M, Wang H. GPU-Accelerated Computation of Vietoris-Rips Persistence Barcodes. 2020 Mar 17. [GitHub](https://github.com/simonzhang00/ripser-plusplus/tree/master)
+2. Carrière M, Chazal F, Ike Y, Lacombe T, Royer M, Umeda Y. PersLay: A Neural Network Layer for Persistence Diagrams and New Graph Topological Signatures. Proc Mach Learn Res. 2020;108:2786–96. [GitHub](https://github.com/MathieuCarriere/perslay)
+3. Brandes N, Ofer D, Peleg Y, Rappoport N, Linial M. ProteinBERT: a universal deep-learning model of protein sequence and function. Martelli PL, editor. Bioinformatics. 2022 Apr 12;38(8):2102–10. [GitHub](https://github.com/nadavbra/protein_bert)
    
