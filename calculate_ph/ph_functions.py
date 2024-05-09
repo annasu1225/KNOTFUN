@@ -3,6 +3,8 @@
 ## You need to install the following packages:
 pip install ripser
 pip install gudhi 
+
+Reference: https://github.com/GUDHI/TDA-tutorial/blob/master/Tuto-GUDHI-perslay-visu.ipynb 
 '''
 
 import numpy as np

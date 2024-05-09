@@ -5,6 +5,7 @@
   {
     "version": "0.2.0",
     "configurations": [
+    
     {
       "type": "bashdb",
       "request": "launch",
@@ -21,16 +22,11 @@
         "console": "integratedTerminal"
       },
       {
-        "name": "Bash Debug",
+        "name": "Bash Debug: Current File",
         "type": "bashdb",
         "request": "launch",
-        "program": "${workspaceFolder}/knottrain.sh",
-        "stopOnEntry": false,
-        "args": [],
-        "cwd": "${workspaceFolder}",
-        "environment": [],
-        "terminal": "integratedTerminal",
-        "internalConsoleOptions": "neverOpen"
+        "program": "${file}",
+        "args": []
       }
     ]
   }

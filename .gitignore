@@ -6,3 +6,16 @@ protein_bert/
 plots/
 ripser-plusplus/
 training_02_16
+build/
+training_*
+all_functions.npy
+deleteme.ipynb
+deleteme.py
+execute_train.sh
+list_of_functions.npy
+misc.py
+pb_only_train_job*
+phpb_train_job*
+train_knotted_output*
+train_tf_knotted*
+train_tf_v1.py

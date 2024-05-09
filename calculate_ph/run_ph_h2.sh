@@ -1,32 +1,34 @@
-##!/bin/bash
-##SBATCH --job-name=h2_job
-##SBATCH --output=h2_job_%j.out
-##SBATCH --error=h2_job_%j.err
-##SBATCH --time=2-00:00:00
-##SBATCH --mem-per-cpu 10G 
-##SBATCH -p gpu
-##SBATCH --gpus=1
-##SBATCH --mail-type=ALL
-##SBATCH -c 2
-##SBATCH -C "a100|rtx5000|rtx3090"
+#!/bin/bash
+#SBATCH --job-name=h2_job
+#SBATCH --output=h2_job_%j.out
+#SBATCH --error=h2_job_%j.err
+#SBATCH --time=1-00:00:00
+#SBATCH --mem-per-cpu 20G 
+#SBATCH -p gpu
+#SBATCH --gpus=1
+#SBATCH --mail-type=ALL
+#SBATCH -c 2
+#SBATCH -C "a100-80g"
 
 # Activate the conda environment
-# module --force purge
-# module restore cuda11
-# conda activate ph
+module --force purge
+module restore cuda11
+conda activate ph
 
-nvidia-smi
+# nvidia-smi -l~
 
 # Directory containing the input files
-input_dir="/gpfs/gibbs/pi/gerstein/as4272/KnotFun/dataset/human_proteins/human_protein_data_files_intersection"
+input_dir="/gpfs/gibbs/pi/gerstein/as4272/KnotFun/dataset/knotted_proteins/knotted_protein_data_files"
 
 # Directory to save the output files
-output_dir="/gpfs/gibbs/pi/gerstein/as4272/KnotFun/dataset/human_proteins/human_protein_ph_h2_files"
+output_dir="/gpfs/gibbs/pi/gerstein/as4272/KnotFun/dataset/knotted_proteins/knotted_protein_ph_h2_files"
+
+# python /gpfs/gibbs/pi/gerstein/as4272/KnotFun/calculate_ph/ph_functions_h2_v2.py ${input_dir} ${output_dir} 30
 
 counter=0
 
 # For each directory in the input directory
-for dir in $(ls -d ${input_dir}/*/)
+for dir in $(ls -d -r ${input_dir}/*/)
 do
     # Extract the id from the directory name
     id=$(basename ${dir})
