@@ -37,21 +37,14 @@ python calculate_ph/ph_functions_h2_v2.py input_dir output_dir
 ```
 
 4. Create a new environment and install the dependencies under **PersLay+ProteinBERT Training**
-5. Clone the [ProteinBERT Repo](https://github.com/nadavbra/protein_bert), and add the files in the `protein_bert`  folder in this repository. Generate ProteinBERT embeddings using
+5. Clone the [ProteinBERT Repo](https://github.com/nadavbra/protein_bert) and download their weights. Follow the instructions on their repository to generate ProteinBERT embeddings.
+6. Use `main.py` with the `--from_scratch` flag as follows
+```
+python main.py --from_scratch --ph_path your_directory --labels_path your_directory --pb_file your_directory
+```
 
-PB CSV Example-> Drive
-PH CSV Example-> Drive
-
-PH Folder Structure Example
-
-PB Folder Structure Example
-
-make_ph.py 
-make_pb.py 
-
-train.py —from_scratch
-
-Note: All training was done on NVIDIA A100 details….
+* After running with `from_scratch`, the `X` and `Y` files will be automatically generated and can be used with `--x_file` and `--y_file` in future runs
+* The `--ablation` flag can be set to also run the ablation study
 
 ## Dependencies
 
