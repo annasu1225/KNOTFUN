@@ -8,7 +8,7 @@ Below are two options to use our model:
 
 ## Option 1 - Start From Our Dataset & Reproduce Results
 
-1. Download our dataset & model weights from (here)[https://drive.google.com/drive/folders/1vwBZ9MLocZCF6WLP4ZgvAZ3Fj2Bi117v?usp=drive_link].
+1. Download our dataset & model weights from [here](https://drive.google.com/drive/folders/1vwBZ9MLocZCF6WLP4ZgvAZ3Fj2Bi117v?usp=drive_link).
 
     * x_data.npy
     * y_data.npy
