@@ -12,25 +12,19 @@ Below are two options to use our model:
 
     * x_data.npy
     * y_data.npy
-    * labels.npy
+    * labels.csv
     * best_model
 
 2. Use `main.py` to reproduce our results and ablations
 
-`--x_file $YOUR_DOWNLOAD_PATH --y_file $YOUR_DOWNLOAD_PATH --labels_file $YOUR_DOWNLOAD_PATH --model_path $YOUR_DOWNLOAD_PATH --ablation --top_k 120`
+```
+main.py --x_file x_data.npy --y_file y_data.npy --labels_file labels.csv --model_path best_model
+```
 
-train_tf.py -> GitHub
-Use —pb_only for PB Only
-Use —ph_only for PH Only
-
-Reproduce hyperparameter tubing
-Don’t set —hyperparamters
-
-Reproduce Ablations
-—ablations —hyperparams —model “”
-
-Ablations
-
+* Use `--pb_only` for ProteinBERT only
+* Use `--ph_only` for PersLay only
+* Use `--ablation` to reproduce our ablation study
+* Exclude `--model_path` to reproduce training \& hyperparameter tuning
 
 Option 2
 Start from any PH and PB embeddings
