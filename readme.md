@@ -45,7 +45,8 @@ Note: All training was done on NVIDIA A100 details….
 
 ## Dependencies
 
-### For ripserplusplus
+### For Ripser++
+- ripserplusplus (1.1.3)
 
 
 ### For PersLay
