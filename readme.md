@@ -43,7 +43,7 @@ python calculate_ph/ph_functions_h2_v2.py input_dir output_dir
 python main.py --from_scratch --ph_path your_directory --labels_path your_directory --pb_file your_directory
 ```
 
-* After running with `from_scratch`, the `X` and `Y` files will be automatically generated and can be used with `--x_file` and `--y_file` in future runs
+* After running with `from_scratch`, the `X.npy` and `Y.npy` files will be automatically generated and can be used with `--x_file` and `--y_file` in future runs
 * The `--ablation` flag can be set to also run the ablation study
 
 ## Dependencies
