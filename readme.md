@@ -28,7 +28,7 @@ main.py --x_file x_data.npy --y_file y_data.npy --labels_file labels.csv --model
 
 ## Option 2 - Bring Your Own Dataset
 
-1. Install dependencies under **PersLay Training**
+1. Install dependencies under **PersLay Training** and **Ripser++**
 2. Generate Vietoris–Rips persistence barcodes for your data using `sh calculate_ph/run_ph.sh`, modifying `input_dir` and `output_dir` to your directories
 3. Train PersLay on your dataset and generate features using
 
